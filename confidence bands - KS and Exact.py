@@ -3,9 +3,9 @@ import scipy as sp
 from scipy.special import kolmogi
 
 
-def asymptotic_confidence(X, xi, alpha=0.05):
+def asymptotic_conf(X, xi, alpha=0.05):
     '''
-    A function that computes an asymptotic confidence band based on Kolmogorov-Smornov statistic.
+    Computes asymptotic confidence band based on Kolmogorov-Smornov statistic.
     X: A numpy array with shape (n,); samples
     xi: A numpy array with shape (r,);  evaluation points
     alpha: Scalar; miscoverage probability alpha
@@ -22,9 +22,9 @@ def asymptotic_confidence(X, xi, alpha=0.05):
     pass
 
 
-def exact_confidence(X, xi, alpha=0.05):
+def exact_conf(X, xi, alpha=0.05):
     '''
-    A function that computes the exact confidence band.
+    Computes the exact confidence band.
     X: A numpy array with shape (n,); samples
     xi: A numpy array with shape (r,);  evaluation points
     alpha: Scalar; miscoverage probability alpha
@@ -50,10 +50,8 @@ def coverage(X, cdf, band, alpha=0.05):
     alpha: Scalar; miscoverage probability alpha
     return: A scalar that equals to 0 or 1 if successful
     '''
-    
-    # TODO: YOUR CODE HERE
     n = len(X)
-    lower, upper = exact_confidence(X, X, alpha=alpha) if band == "exact" else asymptotic_confidence(X, X, alpha=alpha)
+    lower, upper = exact_conf(X, X, alpha=alpha) if band == "exact" else asymptotic_conf(X, X, alpha=alpha)
     inside = np.sum((lower <= cdf) & (cdf <= upper))
     return 1 if (inside / n) >= 1 - alpha else 0
     pass
