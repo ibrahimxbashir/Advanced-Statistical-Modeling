@@ -1,9 +1,9 @@
 import numpy as np
 
 
-def Delta_func(X):
+def delta_f(X):
 	'''
-	X: An array of n data points
+	X: array of n data points
 	return X: D matrix, numpy array of size (n-2)*n
 	'''
 	h = X[1:] - X[:-1] # Since Xi+1 is defined for i = 1, ..., n-1 (so X2,..,Xn), then we need to have Xi defined by a relative shift to the left by 1 index
@@ -21,9 +21,9 @@ def Delta_func(X):
 	pass
 
 
-def W_func(X):
+def W_f(X):
 	'''
-	X: An array of n data points
+	X: array of n data points
 	X: W matrix, numpy array of size (n-2)*(n-2)
 	'''
 	h = X[1:] - X[:-1]
@@ -32,15 +32,15 @@ def W_func(X):
 	pass
 
 
-def cubic_spline_regressor(X, Y, xr, Lambda):
+def cubics_regression(X, Y, xr, Lambda):
 	'''
-	X: An array of n data points
-	Y: An array of n response values
-	xr: an array of r data points
+	X: array of n data points
+	Y: array of n response values
+	xr: array of r data points
 	Lambda: positive float
-	return: cubic spline regression estimation at xr, an array of r values
+	return: cubic spline regression estimation at xr
 	'''
-	n, delta, W = len(X), Delta_func(X), W_func(X) # All of this as by the formulas from the definition of the cubic spline regressor
+	n, delta, W = len(X), delta_f(X), W_f(X) # All of this as by the formulas from the definition of the cubic spline regressor
 	inv_W = np.linalg.inv(W)
 	K = delta.T @ inv_W @ delta
 	S = np.linalg.inv(np.eye(n) + n * Lambda * K) @ Y
@@ -64,9 +64,9 @@ def cubic_spline_regressor(X, Y, xr, Lambda):
 
 def MSE(f, f_hat):
 	'''
-	f: An array of r data points
-	f_hat: An array of r data points
-	return:  a discrete MSE approximation, float
+	f: array of r data points
+	f_hat: array of r data points
+	return: a discrete MSE approximation, float
 	'''
 	return np.mean((f - f_hat)**2)
 	pass
