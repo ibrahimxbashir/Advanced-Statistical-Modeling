@@ -1,7 +1,7 @@
 import numpy as np
 
 
-def kernel(u, d):
+def leg_kernel(u, d):
     '''
     Legendre kernel of order d estimated at the values u.
     u: A numpy array with shape (n,)
@@ -22,11 +22,11 @@ def KDE(x, X, h, d):
     d: an integer that equals 1 or 2
     return: float
     '''
-    return np.mean(kernel((x - X)/h, d))/h  # The mean of K_d(u)/h (we don't divide n since that is done automatically with the mean function)
+    return np.mean(leg_kernel((x - X)/h, d))/h  # The mean of K_d(u)/h (we don't divide n since that is done automatically with the mean function)
     pass
 
 
-def CV_criterion(h, X, d):
+def CV(h, X, d):
     '''
     Cross-Validation criteria at bandwidth h for the sample X and the Legendre kernel of order d
     h: float
@@ -40,7 +40,7 @@ def CV_criterion(h, X, d):
 
     n = len(X) # Using broadcasting, (X[:,None] - X gives n by n matrix which subtracts each pair of elements of X) to implement function
     p2 = np.sum(np.where(np.abs(X[:, None] - X) <= 2*h, q(X[:,None], X, h, d), 0))/(h*n**2) # Estimate p^2_i = sum(q(u))/(h*n**2) where |Xi - Xj| <= 2h
-    Tn = np.sum(np.where((np.eye(n)==0), kernel((X[:,None] - X)/h, d), 0))/(n*(n - 1)*h) # Compute p_n\i = sum(K((Xj - x)/h), since Kernel already computes for |u|<=1, we don't need to include that requirement
+    Tn = np.sum(np.where((np.eye(n)==0), leg_kernel((X[:,None] - X)/h, d), 0))/(n*(n - 1)*h) # Compute p_n\i = sum(K((Xj - x)/h), since Kernel already computes for |u|<=1, we don't need to include that requirement
     # We use np.eye(n)==0 for condition, because np.eye(n) creates an identity matrix of size n, and all values that are 0 are the non-diagonal (distinct pairs of X, i.e. i=/=j)
     return p2 - 2*Tn
     pass
