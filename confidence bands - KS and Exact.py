@@ -58,8 +58,3 @@ def coverage(X, cdf, band, alpha=0.05):
     return 1 if (inside / n) >= 1 - alpha else 0
     pass
 
-
-    plotter(np.random.chisquare(3, 100), [1, 2.3, 3.6, 5, 6.4, 8.8], 0.99)
-    KA_compare()
-
-    pass
